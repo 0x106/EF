@@ -21,18 +21,21 @@ corpus, query = {}, {}
 words = corpus_text.split()
 for word in words:
 	word = re.sub('[().",\],\[\d+\':!@#$%^&*]', '', word)
-	try:
-		corpus[word]+=1.0
-	except:
-		corpus[word]=1.0
+	# print word
+	if len(word) > 0.0:
+		try:
+			corpus[word] += 1.0
+		except:
+			corpus[word] = 1.0
 
 words = input_text.split()
 for word in words:
 	word = re.sub('[().",\],\[\d+\':!@#$%^&*]', '', word)
-	try:
-		query[word]+=1.0
-	except:
-		query[word]=1.0
+	if len(word) > 0.0:
+		try:
+			query[word] += 1.0
+		except:
+			query[word] = 1.0
 
 # query terms and their significance
 sig = []
@@ -40,18 +43,57 @@ for key in query:
 	sig.append([key, float(query[key]) / float(corpus[key]), float(corpus[key])])# * float(corpus[key])  ])
 sig = sorted(sig, key=lambda x: -x[1])
 
-values = []
-for item in sig:
-	values.append(item[1])
-	if item[1] < 10.0:
-		print item
 
-plt.plot(values)
-plt.show()
+if False:
+	values = []
+	for item in sig:
+		values.append(item[1])
+		if item[1] < 10.0:
+			print item
 
-
+	if False:
+		plt.plot(values)
+		plt.show()
 
 # 3. conduct searches on each significant term
+# to provide a bit of variety we randomly take N terms above a given significance threshold.
+# terms are chosen according to the 'probability' they are significant
+
+N = 5
+K = 0.15
+
+terms = []
+while(len(terms) < N):
+	u, idx = np.random.rand(), int(np.random.rand() * len(sig))
+	if u < sig[idx][1] and u > K and sig[idx][0]:
+		terms.append(sig[idx]) 
+
+print '------------------------'
+
+for item in terms:
+	print item[0], '\t', item[1]
+
+# go back and find the sentences the top terms came from
+# input_text = input_file.read().lower()
+# print input_text
+text = input_text.split('.')
+
+sentences = []
+
+for s in text:
+	words = s.split()
+	for i,word in enumerate(words):
+		words[i] = re.sub('[().",\],\[\d+\':!@#$%^&*]', '', word)
+	sentences.append("")
+	for w in words:
+		sentences[-1] += w + " "
+	print '-->', sentences[-1]
+
+for item in terms:
+	for s in sentences:
+		if item[0] in s:
+			print item[0], '-->', s
+
 
 # 4. Extract html for top links
 
@@ -59,3 +101,4 @@ plt.show()
 
 # 6. take the most relevant
 
+# 
