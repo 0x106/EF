@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import re
 
-# results = call(["googler", "bonsai", ">", "/Users/jordancampbell/Desktop/EF/output_file.txt"])
+results = call(["googler", " bonsai ", " > ", "/Users/jordancampbell/Desktop/EF/output_file.txt"])
 
 input_file = open('/Users/jordancampbell/Desktop/EF/baduk_input_file.txt')
 corpus_file = open('/Users/jordancampbell/Desktop/EF/corpus.txt')
@@ -62,7 +62,7 @@ for item in tfidf:
 # links[0] = links[0][1:]
 
 # for l in links:
-	# print l
+# 	print l
 
 
 

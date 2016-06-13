@@ -89,10 +89,48 @@ for s in text:
 		sentences[-1] += w + " "
 	print '-->', sentences[-1]
 
+queries = []
+query_terms = []
+
 for item in terms:
 	for s in sentences:
 		if item[0] in s:
+			queries.append(s)
+			query_terms.append(item[0])
 			print item[0], '-->', s
+
+links = []
+
+print query_terms
+
+for i,q in enumerate(queries):
+
+	output_file_name = "/Users/jordancampbell/Desktop/EF/output/" + str(i) + ".txt"
+	output_file = open(output_file_name, "w")
+	print '----->', output_file_name, q
+
+	call(["googler", q, " >| "], stdout=output_file)
+	output_file = open(output_file_name, "r")
+
+	text = output_file.read()
+	data = [text[i] for i in range(len(text))]
+
+	for i in range(len(data)):
+		if data[i:i+4] == ['h', 't', 't', 'p']:
+			idx = i-1
+			links.append("")
+			while data[idx] != '[':
+				links[-1] += str(data[idx])
+				idx += 1
+
+	# links[0] = links[0][1:]
+
+print '=============================================='
+
+for l in links:
+	print l
+
+
 
 
 # 4. Extract html for top links
