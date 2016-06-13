@@ -5,8 +5,6 @@ import re
 
 # results = call(["googler", "bonsai", ">", "/Users/jordancampbell/Desktop/EF/output_file.txt"])
 
-misc_characters = ['[', ']', '.', '"', "'"]
-
 input_file = open('/Users/jordancampbell/Desktop/EF/baduk_input_file.txt')
 corpus_file = open('/Users/jordancampbell/Desktop/EF/corpus.txt')
 output_file = open('/Users/jordancampbell/Desktop/EF/output_file.txt')
@@ -38,7 +36,6 @@ for word in words:
 tfidf = []
 
 for key in doc:
-
 	tfidf.append([key, float(doc[key]), float(corpus[key])])# * float(corpus[key])  ])
 
 	# print key, '\t\t', doc[key], '\t\t', corpus[key], '\t\t', float(doc[key]) / np.log(float(corpus[key]))

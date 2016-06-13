@@ -4,6 +4,7 @@ from subprocess import call
 import sys
 import numpy as np
 import re
+import matplotlib.pyplot as plt
 
 # 1. extract text from an article
 input_file = open('/Users/jordancampbell/Desktop/EF/baduk_input_file.txt')
@@ -19,7 +20,7 @@ corpus_text = corpus_file.read().lower()
 corpus, query = {}, {}
 words = corpus_text.split()
 for word in words:
-	word = re.sub('[().",\],\[\d+\']', '', word)
+	word = re.sub('[().",\],\[\d+\':!@#$%^&*]', '', word)
 	try:
 		corpus[word]+=1.0
 	except:
@@ -27,7 +28,7 @@ for word in words:
 
 words = input_text.split()
 for word in words:
-	word = re.sub('[().",\],\[\d+\']', '', word)
+	word = re.sub('[().",\],\[\d+\':!@#$%^&*]', '', word)
 	try:
 		query[word]+=1.0
 	except:
@@ -36,11 +37,18 @@ for word in words:
 # query terms and their significance
 sig = []
 for key in query:
-	sig.append([key, float(query[key]), float(corpus[key])])# * float(corpus[key])  ])
+	sig.append([key, float(query[key]) / float(corpus[key]), float(corpus[key])])# * float(corpus[key])  ])
 sig = sorted(sig, key=lambda x: -x[1])
 
+values = []
 for item in sig:
-	print item
+	values.append(item[1])
+	if item[1] < 10.0:
+		print item
+
+plt.plot(values)
+plt.show()
+
 
 
 # 3. conduct searches on each significant term
