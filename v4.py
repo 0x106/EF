@@ -37,6 +37,8 @@ for word in words:
 		except:
 			query[word] = 1.0
 
+print query
+
 # query terms and their significance
 sig = []
 for key in query:
